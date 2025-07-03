@@ -1,0 +1,87 @@
+.pagination .page-link {
+    border: 0;
+    color: #6c757d;
+    padding: 0.5rem 0.75rem;
+    transition: all 0.2s;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+    color: #0d6efd;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.btn-light-primary {
+    color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.1);
+    border: none;
+}
+.btn-light-primary:hover {
+    background-color: rgba(13, 110, 253, 0.2);
+    color: #0d6efd;
+}
+.btn-light-danger {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
+    border: none;
+}
+.btn-light-danger:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+}
+
+.icon-circle {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+.hover-row {
+    transition: background-color 0.2s ease;
+}
+
+.hover-row:hover {
+    background-color: rgba(0,0,0,0.02);
+}
+
+.hover-lift {
+    transition: transform 0.2s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+}
+
+
+.student-header {
+    background: linear-gradient(45deg, rgba(65,88,208,0.05), rgba(200,80,192,0.05));
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.icon-wrapper {
+    width: 120px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(65,88,208,0.1);
+    transition: all 0.3s ease;
+}
+
+.icon-wrapper i {
+    color: #4158d0;
+    font-size: 1.2rem;
+}
