@@ -128,11 +128,35 @@
                             <i class="fas fa-chart-line"></i>
                             <span>Reports</span>
                         </a>
-                        <a href="{{ route('admin.rollcall.index') }}"
-                            class="nav-link {{ request()->routeIs('admin.rollcall.index') || request()->routeIs('admin.rollcall.create') ? 'active' : '' }}">
-                            <i class="fas fa-clipboard-list"></i>
-                            <span>Roll Call</span>
+                        <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#attendanceMenu" role="button"
+                            aria-expanded="{{ request()->routeIs('admin.rollcall.index') || request()->routeIs('admin.rollcall.studentAttendanceReport') ? 'true' : 'false' }}"
+                            aria-controls="attendanceMenu">
+                            <div class="">
+                                <i class="fas fa-clipboard-list me-2"></i>
+                                <span>Attendance</span>
+                            </div>
+                            <i class="fas fa-chevron-down text-muted small"></i>
                         </a>
+
+                        <div class="collapse ps-4 ms-2 border-start border-2 {{ request()->routeIs('admin.rollcall.index') || request()->routeIs('admin.rollcall.studentAttendanceReport') ? 'show' : '' }}"
+                            id="attendanceMenu">
+                            <ul class="nav flex-column mt-2">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.rollcall.index') }}"
+                                        class="nav-link {{ request()->routeIs('admin.rollcall.index') ? 'active' : '' }}">
+                                        <i class="fas fa-list"></i>
+                                        <span>Attendance Records</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.rollcall.studentAttendanceReport') }}"
+                                        class="nav-link {{ request()->routeIs('admin.rollcall.studentAttendanceReport') ? 'active' : '' }}">
+                                        <i class="fas fa-list-alt"></i>
+                                        <span>Attendance Report</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                         <a href="#" class="nav-link">
                             <i class="fas fa-cog"></i>
                             <span>Settings</span>

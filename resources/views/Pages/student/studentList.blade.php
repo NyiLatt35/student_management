@@ -65,7 +65,7 @@
             @else
 
             <!-- Desktop Table View (hidden on mobile) -->
-            <div class="d-none d-md-block">
+            <div class="d-none d-lg-block">
                 <div class="table-responsive">
                     <table class="table table-hover table-striped align-middle mb-0 border">
                         <thead class="table-primary">
@@ -73,7 +73,6 @@
                                 <th scope="col" class="fw-semibold py-3 px-4">#ID</th>
                                 <th scope="col" class="fw-semibold py-3 px-4">Name</th>
                                 <th scope="col" class="fw-semibold py-3 px-4">Grade</th>
-                                {{-- <th scope="col" class="fw-semibold py-3 px-4">Email</th> --}}
                                 <th scope="col" class="fw-semibold py-3 px-4">Phone</th>
                                 <th scope="col" class="fw-semibold py-3 px-4">Address</th>
                                 <th scope="col" class="fw-semibold py-3 px-4 text-center">Actions</th>
@@ -132,7 +131,7 @@
             </div>
 
             <!-- Mobile List View (visible only on mobile) -->
-            <div class="d-md-none">
+            <div class="d-lg-none">
 
                 @forelse($students ?? [] as $student)
                     <div class="card border-0 shadow mb-3">

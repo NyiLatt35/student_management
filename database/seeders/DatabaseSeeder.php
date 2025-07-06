@@ -29,10 +29,9 @@ class DatabaseSeeder extends Seeder
         }
         // for attendance
         Attendance::create(['attendanceTypeId' => 1, 'attendanceType' => 'Present']);
-        Attendance::create(['attendanceTypeId' => 2, 'attendanceType' => 'Absent']);
-        Attendance::create(['attendanceTypeId' => 3, 'attendanceType' => 'Absent with leave']);
-        Attendance::create(['attendanceTypeId' => 4, 'attendanceType' => 'Absent without leave']);
-        Attendance::create(['attendanceTypeId' => 5, 'attendanceType' => 'Weather']);
+        Attendance::create(['attendanceTypeId' => 2, 'attendanceType' => 'Absent with leave']);
+        Attendance::create(['attendanceTypeId' => 3, 'attendanceType' => 'Absent without leave']);
+        Attendance::create(['attendanceTypeId' => 4, 'attendanceType' => 'Weather']);
 
     }
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RollCallController;
+use Illuminate\Support\Facades\Auth;
 
 // Route::get('/', function () {
 //     return view('admin.home');
@@ -29,6 +30,7 @@ Route::prefix('admin')->group(function () {
         'update' => 'admin.rollcall.update',
         'destroy' => 'admin.rollcall.destroy',
     ]);
+    Route::get('attendance/studentAttendanceReport', [RollCallController::class, 'studentAttendanceReport'])->name('admin.rollcall.studentAttendanceReport');
 });
 
 Auth::routes();

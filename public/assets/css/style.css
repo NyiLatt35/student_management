@@ -1,5 +1,5 @@
 :root {
-    --sidebar-width: 240px;
+    --sidebar-width: 260px;
     --primary-color: #0d6efd;
     --secondary-color: #6c757d;
     --success-color: #315d9f44;
@@ -13,7 +13,7 @@
     z-index: 100;
     padding-top: 60px;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05);
-    width: var(--sidebar-width);
+    /* width: var(--sidebar-width); */
     transition: all 0.3s;
     background: #f8f9fa;
 }

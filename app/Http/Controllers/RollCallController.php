@@ -107,6 +107,16 @@ class RollCallController extends Controller
     }
 
     /**
+     * Show the form for student attendance report.
+     */
+    public function studentAttendanceReport(Request $request){
+        $data['grades'] = Grade::all();
+        $data['attendances'] = Attendance::all();
+        $data['getRecord'] = Rollcall::getStudentAttendanceRecord();
+        return view("Pages.rollcall.attendanceReport", $data);
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(string $id)

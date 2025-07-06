@@ -44,9 +44,9 @@
                             <button type="submit" class="btn btn-primary flex-fill">
                                 <i class="fas fa-search me-2"></i>Search
                             </button>
-                            <button type="reset" class="btn btn-outline-info flex-fill">
+                            <a href="{{ route("admin.rollcall.index") }}" class="btn btn-outline-info flex-fill">
                                 <i class="fas fa-redo me-2"></i>Reset
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </form>
@@ -104,8 +104,8 @@
                                             <td class="py-3 px-4">
                                                 <input type="hidden" id="gradeId" value="{{ $grade->gradeId }}">
                                                 <span class="badge bg-info bg-opacity-10 text-info px-2 py-1"
-                                                    id="">
-                                                    {{ $grade->gradeName }}
+                                                    id="gradeName">
+                                                    {{ $student->grade->gradeName }}
                                                 </span>
                                             </td>
                                             <td class="fw-semibold" id="">
