@@ -13,23 +13,29 @@
         </div>
 
         <!-- Search Form -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <form action="{{ route('admin.rollcall.create') }}" method="GET" enctype="multipart/form-data"
-                    autocomplete="false" novalidate="novalidate">
-                    <div class="row g-3">
-                        <!-- Date Input -->
-                        <div class="col-12 col-md-4">
-                            <label for="date" class="form-label">Date</label>
-                            <input type="date" id="date" name="date" class="form-control"
-                                placeholder="Select a date">
+        <div class="card shadow-sm rounded-4 border-0 mb-4">
+            <div class="card-body p-4">
+                <form action="{{ route('admin.rollcall.create') }}" method="GET">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold small text-muted">
+                                <i class="far fa-calendar me-1"></i>Date
+                            </label>
+                            <input type="date"
+                                   class="form-control rounded-3 shadow-sm"
+                                   name="date"
+                                   value="{{ Request::get('date') }}"
+                                   required>
                         </div>
 
-                        <!-- Class Select -->
-                        <div class="col-12 col-md-4">
-                            <label for="grade" class="form-label">Grade</label>
-                            <select id="grade" name="grade" class="form-select">
-                                <option value="" disabled selected>Select a grade</option>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold small text-muted">
+                                <i class="fas fa-graduation-cap me-1"></i>Grade
+                            </label>
+                            <select class="form-select rounded-3 shadow-sm"
+                                    name="grade"
+                                    required>
+                                <option value="" disabled selected>Select grade</option>
                                 @foreach ($grades as $grade)
                                     <option value="{{ $grade->gradeId }}"
                                         {{ Request::get('gradeId') == $grade->gradeId ? 'selected' : '' }}>
@@ -39,13 +45,13 @@
                             </select>
                         </div>
 
-                        <!-- Buttons -->
-                        <div class="col-12 col-md-4 d-flex gap-2 align-items-end">
-                            <button type="submit" class="btn btn-primary flex-fill">
+                        <div class="col-md-4 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm flex-grow-1">
                                 <i class="fas fa-search me-2"></i>Search
                             </button>
-                            <a href="{{ route("admin.rollcall.index") }}" class="btn btn-outline-info flex-fill">
-                                <i class="fas fa-redo me-2"></i>Reset
+                            <a href="{{ route('admin.rollcall.index') }}"
+                               class="btn btn-outline-secondary px-3 py-2 rounded-3 shadow-sm">
+                                <i class="fas fa-redo"></i>
                             </a>
                         </div>
                     </div>
@@ -58,6 +64,16 @@
             <!-- Table -->
             <div class="card shadow-sm">
                 <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fas fa-list-check text-primary fa-lg"></i>
+                            <h5 class="mb-0">Student Record List</h5>
+                        </div>
+                        <div class="text-muted">
+                            <i class="fas fa-users me-2"></i>
+                            {{ $students->count() }} Students
+                        </div>
+                    </div>
                     <!-- Responsive Design -->
                     <div class="d-none d-md-block">
                         <div class="table-responsive">
@@ -78,7 +94,6 @@
                                             // Initialize variables
                                             $attendanceTypeId = null;
                                             $attendance = null;
-
 
                                             $getAttendance = $student->getAttendance(
                                                 $student->studentId,

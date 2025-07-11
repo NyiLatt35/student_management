@@ -116,13 +116,17 @@
                             </div>
                         </ul> --}}
 
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('admin.teacher.index') }}" class="nav-link {{ request()->routeIs('admin.teacher.index') ? 'active' : '' }}">
                             <i class="fas fa-chalkboard-teacher"></i>
                             <span>Teachers</span>
                         </a>
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('admin.subject.index') }}" class="nav-link {{ request()->routeIs('admin.subject.index') || request()->routeIs('admin.subject.edit') ? 'active' : '' }}">
                             <i class="fas fa-book"></i>
-                            <span>Courses</span>
+                            <span>Subjects</span>
+                        </a>
+                        <a href="{{ route('admin.lesson.index') }}" class="nav-link {{ request()->routeIs('admin.lesson.index') ? 'active' : '' }}">
+                            <i class="fas fa-cube"></i>
+                            <span>Module</span>
                         </a>
                         <a href="#" class="nav-link">
                             <i class="fas fa-chart-line"></i>
@@ -203,14 +207,18 @@
 
     {{-- Toast Container --}}
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        @if (session('success'))
-            <div class="toast show align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+        @if (session('success') || session('error'))
+            <div class="toast show align-items-center {{ session('success') ? 'text-bg-success' : 'text-bg-danger' }} border-0" role="alert" aria-live="assertive"
                 aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-check-circle me-2"></i>
-                            {{ session('success') }}
+                            @if (session('success'))
+                                <i class="fas fa-check-circle me-2"></i>
+                                @else
+                                <i class="fas fa-cancel me-2"></i>
+                            @endif
+                            {{ session('success') ? session('success') : session('error') }}
                         </div>
                     </div>
                 </div>

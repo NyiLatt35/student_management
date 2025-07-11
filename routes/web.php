@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RollCallController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\ModulesController;
+
 use Illuminate\Support\Facades\Auth;
 
 // Route::get('/', function () {
@@ -31,6 +34,28 @@ Route::prefix('admin')->group(function () {
         'destroy' => 'admin.rollcall.destroy',
     ]);
     Route::get('attendance/studentAttendanceReport', [RollCallController::class, 'studentAttendanceReport'])->name('admin.rollcall.studentAttendanceReport');
+    Route::resource('subject', (SubjectController::class))->names([
+        'index' => 'admin.subject.index',
+        'create' => 'admin.subject.create',
+        'store' => 'admin.subject.store',
+        'show' => 'admin.subject.show',
+        'edit' => 'admin.subject.edit',
+        'update' => 'admin.subject.update',
+        'destroy' => 'admin.subject.destroy',
+    ]);
+    Route::resource('teacher', App\Http\Controllers\TeacherController::class)->names([
+        'index' => 'admin.teacher.index',
+        'create' => 'admin.teacher.create',
+        'store' => 'admin.teacher.store',
+        'show' => 'admin.teacher.show',
+        'edit' => 'admin.teacher.edit',
+        'update' => 'admin.teacher.update',
+        'destroy' => 'admin.teacher.destroy',
+    ]);
+    Route::get('lesson', [ModulesController::class, 'index'])->name('admin.lesson.index');
+    Route::post('lesson/store', [ModulesController::class, 'store'])->name('admin.lesson.store');
+    Route::get('lesson/edit/{module}', [ModulesController::class, 'edit'])->name('admin.lesson.edit');
+
 });
 
 Auth::routes();

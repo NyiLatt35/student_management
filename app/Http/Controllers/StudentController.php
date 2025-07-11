@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Student;
 use App\Models\Grade;
+use Exception;
 
 class StudentController extends Controller
 {
