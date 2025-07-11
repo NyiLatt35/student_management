@@ -129,7 +129,7 @@
                                                         {{ $module->module_code }}
                                                     </span>
                                                 @endforeach
-                                                <a href="#" class="btn btn-sm btn-outline-info px-2 py-1 rounded-pill">
+                                                <a href="{{ route('admin.subject.show', $subject->id) }}" class="btn btn-sm btn-outline-info px-2 py-1 rounded-pill">
                                                     <i class="fas fa-plus me-1"></i>{{ $subject->modules->count() - 4 }} more
                                                 </a>
                                             @endif
