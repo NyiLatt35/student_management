@@ -56,66 +56,98 @@ class SubjectController extends Controller
         return view('Pages.subject.edit', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $this->validateSubjectNameForUpdate($request, $id);
 
+        // Get the subject
         $subject = Subject::findOrFail($id);
-        $oldSubjectName = $subject->sub_name;
 
-        // Update subject name
-        $subject->update(['sub_name' => $request->input('subject_name')]);
+        // Get the update data
+        $data = $this->getSubjectData($request);
 
-        // If subject name changed, update all module codes and if replaced or prefix first 3 characters
-        if ($oldSubjectName !== $subject->sub_name) {
-            $newPrefix = strtoupper(substr($subject->sub_name, 0, 3));
+        // Update the subject
+        $updateSuccess = $subject->update($data);
+
+        if ($updateSuccess) {
+            // Handle module update/creation
             $modules = Module::where('subject_id', $id)->get();
 
-            foreach ($modules as $module) {
-                // Update module code with new prefix
-                $module->update(['module_code' => $newPrefix . substr($module->module_code, 3)]);
+            if ($modules->count() > 0) {
+                // Update existing modules
+                foreach ($modules as $module) {
+                    $module->update([
+                        'module_name' => strtoupper(substr($data['sub_name'], 0, 3)) . $module->module_code,
+                    ]);
+                }
             }
-        }
 
-        // Handle module deletions
-        $deleteModules = $request->input('delete_modules', []);
-        if (!empty($deleteModules)) {
-            Module::whereIn('id', $deleteModules)->delete();
-        }
+            // Handle module deletions
+            $deleteModules = $request->input('delete_modules', []);
+            if (!empty($deleteModules)) {
+                Module::whereIn('id', $deleteModules)->delete();
+            }
 
-        // Handle module updates and new modules
-        $lessonCodes = $request->input('lesson_code', []);
+            // Handle existing modules updates
+            $modules = $request->input('lesson_code', []);
 
-        if (!empty($lessonCodes) && is_array($lessonCodes)) {
-            // Get existing modules for this subject
-            $existingModules = Module::where('subject_id', $id)->get();
-            $existingModuleIndex = 0;
-
-            foreach ($lessonCodes as $moduleCode) {
-                if (!empty($moduleCode)) {
-                    // Generate proper module code
-                    $fullModuleCode = strtoupper(substr($subject->sub_name, 0, 3)) . $moduleCode;
-
-                    // Check if this is updating an existing module or creating new one
-                    if ($existingModuleIndex < $existingModules->count()) {
-                        // Update existing module
-                        $existingModule = $existingModules[$existingModuleIndex];
-                        $existingModule->update(['module_code' => $fullModuleCode]);
-                        $existingModuleIndex++;
-                    } else {
-                        // Create new module
-                        Module::create([
+            if (!empty($modules) && is_array($modules)) {
+                foreach ($modules as $moduleId => $moduleName) {
+                    if (!empty($moduleName) && is_numeric($moduleId)) {
+                        // Create a mock request fdor the getLessons method
+                        $moduleRequest = new Request([
                             'subject_id' => $id,
-                            'module_code' => $fullModuleCode
+                            'lesson_name' => $moduleName
                         ]);
+
+                        // dd($moduleRequest->all());
+                        $existingModule = Module::find($moduleId);
+                        $moduleData = $this->getLessons($moduleRequest, true, $existingModule);
+
+                        $exists = Module::where('subject_id', $id)
+                                ->where('module_code', $moduleData['module_code'])
+                                ->where('id', '!=', $moduleId)
+                                ->exists();
+
+                            if (!$exists) {
+                                Module::where('id', $moduleId)->update($moduleData);
+                            }
+
                     }
                 }
             }
-        }
 
+            // Handle new modules
+            $newModules = $request->input('new_lesson_code', []);
+            if (!empty($newModules) && is_array($newModules)) {
+                foreach ($newModules as $moduleName) {
+                    if (!empty($moduleName)) {
+                        $moduleRequest = new Request([
+                            'subject_id' => $id,
+                            'lesson_name' => $moduleName
+                        ]);
+
+                        $moduleData = $this->getLessons($moduleRequest, false, null);
+
+                        if ($moduleData) {
+                            // ✅ Check Duplicate Module Code
+                            $exists = Module::where('subject_id', $id)
+                                ->where('module_code', $moduleData['module_code'])
+                                ->exists();
+                            // If the module does not exist, create it
+                            if ($exists) {
+                                // error message
+                                return redirect()->back()->with('error', 'Module already exists!');
+                            }else {
+                            Module::create($moduleData);
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        // Redirect with success message
         return redirect()->route('admin.subject.index')->with('success', 'Subject updated successfully!');
     }
 
@@ -126,6 +158,24 @@ class SubjectController extends Controller
     {
         Subject::destroy($id);
         return redirect()->back()->with('success', 'Subject deleted successfully!');
+    }
+   
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function show(string $id)
+    {
+        // Fix: Get the subject with its modules
+        $subject = Subject::with('modules')->find($id);
+
+        // Check if subject exists
+        if (!$subject) {
+            return redirect()->route('admin.subject.index')->with('error', 'Subject not found!');
+        }
+
+        $data['subject'] = $subject;
+
+        return view('Pages.subject.detail', $data);
     }
 
     /**
@@ -159,9 +209,16 @@ class SubjectController extends Controller
      */
     public function getSubjectData(Request $request)
     {
-        return [
+        $data = [
             'sub_name' => $request->input('subject_name'),
         ];
+
+        // Only add module_code if it exists in the request
+        if ($request->has('module_code')) {
+            $data['module_code'] = $request->input('module_code');
+        }
+
+        return $data;
     }
 
     /**
@@ -175,29 +232,14 @@ class SubjectController extends Controller
             return null;
         }
 
-        if (!$isUpdate) {
-            $module_code = strtoupper(substr($subject->sub_name, 0, 3)) . $request->lesson_code;
-            
-            // Check if module code already exists
-            if (Module::where('module_code', $module_code)->exists()) {
-            return null; // Return null if duplicate exists
-            }
-        } else {
-            if ($exitingModule && $subject->id != $exitingModule->subject_id) {
-            $module_code = strtoupper(substr($subject->sub_name, 0, 3)) . $request->lesson_code;
-            
-            // Check if module code already exists and is not the current module
-            if (Module::where('module_code', $module_code)->where('id', '!=', $exitingModule->id)->exists()) {
-                return null; // Return null if duplicate exists
-            }
-            } else {
-            $module_code = $exitingModule->module_code;
-            }
-        }
+        $moduleCount = Module::where('subject_id', $request->subject_id)->count();
+        $moduleCount++;
+        $module_code = strtoupper(substr($subject->sub_name, 0, 3)) . $request->lesson_name;
 
         return [
             'subject_id' => $request->subject_id,
-            'module_code' => $module_code,
+            'module_code' => $request->lesson_name,
+            'module_name' => $module_code,
         ];
     }
 }

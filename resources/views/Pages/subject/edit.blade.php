@@ -63,7 +63,7 @@
 
                                         <div class="border rounded-3 p-3 bg-light">
 
-                                            @if ($modules->count() > 0)
+                                            @if ($modules->count() >= 0)
                                                 @php $hasModules = false @endphp
                                                 <div class="row g-2" id="modules-container">
                                                     @foreach ($modules as $module)
@@ -71,7 +71,7 @@
                                                             @php $hasModules = true @endphp
                                                             <div class="col-md-6" data-module-id="{{ $module->id }}">
                                                                 <div class="input-group">
-                                                                    
+
                                                                     <input type="text" class="form-control"
                                                                         name="lesson_code[]"
                                                                         value="{{ $module->module_code }}"
@@ -159,7 +159,7 @@
                 <div class="input-group">
                      <input type="text"
                             class="form-control"
-                            id="lesson_name" name="lesson_code[]"
+                            id="lesson_name" name="new_lesson_code[]"
                             placeholder="module code">
                     <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeNewModule(this)">
                         <i class="fas fa-times"></i>
@@ -174,6 +174,3 @@
         }
     </script>
 @endsection
-
-
-{{-- <input type="text" class="form-control" name="lesson_code" placeholder="Module name"> --}}

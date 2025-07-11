@@ -55,6 +55,7 @@ Route::prefix('admin')->group(function () {
     Route::get('lesson', [ModulesController::class, 'index'])->name('admin.lesson.index');
     Route::post('lesson/store', [ModulesController::class, 'store'])->name('admin.lesson.store');
     Route::get('lesson/edit/{module}', [ModulesController::class, 'edit'])->name('admin.lesson.edit');
+    Route::put('lesson/update/{module}', [ModulesController::class, 'update'])->name('admin.lesson.update');
 
 });
 

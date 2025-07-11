@@ -146,13 +146,13 @@
                                     <td class="py-3 px-4 border-0">
                                         <div class="d-flex justify-content-center gap-2">
                                             {{-- Edit Action for subject --}}
-                                            <a href="{{ route('admin.lesson.edit', $subject->id) }}"
+                                            <a href="{{ route('admin.subject.edit', $subject->id) }}"
                                                 class="btn btn-sm btn-outline-primary px-3 hover-lift"
                                                 data-bs-toggle="tooltip" title="Edit subject">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             {{-- View subject Information Details --}}
-                                            <a href="#" class="btn btn-sm btn-outline-info px-3 hover-lift"
+                                            <a href="{{ route('admin.subject.show', $subject->id) }}" class="btn btn-sm btn-outline-info px-3 hover-lift"
                                                 data-bs-toggle="tooltip" title="View Details">
                                                 <i class="fas fa-eye"></i>
                                             </a>

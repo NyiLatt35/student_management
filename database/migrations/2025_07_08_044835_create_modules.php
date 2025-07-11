@@ -15,7 +15,7 @@ return new class extends Migration
     Schema::create('modules', function (Blueprint $table) {
     $table->id();
     $table->unsignedBigInteger('subject_id'); // Changed from string
-    $table->string('module_code')->unique();
+    $table->string('module_code');
     $table->string('module_name')->nullable(); // Add this if using Solution 1
 
     $table->foreign('subject_id')
