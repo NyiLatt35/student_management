@@ -1,4 +1,4 @@
-// for delete action 
+// for delete action
 const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
         confirmButton: 'btn btn-danger ms-2',
@@ -9,8 +9,8 @@ const swalWithBootstrapButtons = Swal.mixin({
 
 function confirmDelete(studentId) {
     swalWithBootstrapButtons.fire({
-        title: 'Delete Student',
-        text: 'Are you sure you want to delete this student?',
+        title: 'Delete Record',
+        text: 'Are you sure you want to delete?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: '<i class="fas fa-trash me-2"></i>Delete',
@@ -26,7 +26,7 @@ function confirmDelete(studentId) {
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire({
                 title: 'Cancelled',
-                text: 'Student record is safe',
+                text: 'This record is safe',
                 icon: 'info',
                 timer: 2000,
                 showConfirmButton: false

@@ -19,7 +19,23 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        return view('Pages.teacher.teacherList');
+        $query = request()->input('query');
+
+        $data['teachers'] = Teacher::with(['subject', 'gradeLevel'])
+            ->when($query, function ($queryBuilder) use ($query) {
+                $queryBuilder->where(function ($q) use ($query) {
+                    $q->where('teacher_name', 'like', '%' . $query . '%')
+                    ->orWhere('teacher_id', 'like', '%' . $query . '%')
+                    ->orWhere('teacher_email', 'like', '%' . $query . '%');
+                })->orWhereHas('subject', function ($subjectQuery) use ($query) {
+                    $subjectQuery->where('sub_name', 'like', '%' . $query . '%');
+                })->orWhereHas('gradeLevel', function ($gradeQuery) use ($query) {
+                    $gradeQuery->where('gradeName', 'like', '%' . $query . '%');
+                });
+            })
+            ->paginate(5);
+
+        return view('Pages.teacher.teacherList', $data);
     }
 
     /**
@@ -134,7 +150,18 @@ class TeacherController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Return the view with teacher details from join subject and grade table
+        $data['teacher'] = Teacher::with(['subject', 'gradeLevel'])
+            ->where('id', $id)
+            ->first();
+        // dd($data['teacher']);
+        // Check if teacher exists
+        if (!$data['teacher']) {
+            return redirect()->route('admin.teacher.index')->with('error', 'Teacher not found!');
+        }
+
+        return view('Pages.teacher.details', $data);
+        // return view('Pages.teacher.details');
     }
 
     /**
@@ -158,7 +185,21 @@ class TeacherController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            // Find the teacher by ID
+            $teacher = Teacher::findOrFail($id);
+
+            // Delete the teacher record
+            $teacher->delete();
+
+            // Also delete the associated user record
+            User::where('email', $teacher->teacher_email)->delete();
+
+            return redirect()->route('admin.teacher.index')->with('success', 'Teacher deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete teacher: ' . $e->getMessage());
+        }
+
     }
 
     // Validation of teacher data
