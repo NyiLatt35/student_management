@@ -4,7 +4,7 @@
     --primary-color: #0d6efd;
     --secondary-color: #6c757d;
     --success-color: #315d9f44;
-    --bg-primary-slidbar:: var(--bg-primary-slidbar);
+    --bg-primary-slidbar: #fff ;
     --red-text: #dc3545;
     --border-red-color: #dc2626;
     --black-color-opocity: #333;
@@ -68,18 +68,7 @@
 .stat-card:hover {
     transform: translateY(-5px);
 }
-/*
-@media (max-width: 991.98px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-    .sidebar.show {
-        transform: translateX(0);
-    }
-    .main-content {
-        margin-left: 0;
-    }
-} */
+
 
 /* Form Container */
 .form-container {

@@ -14,14 +14,19 @@ class SubjectController extends Controller
      */
     public function index(Request $request)
     {
-        $query = $request->input('query');
+        $subjectName = $request->input('subject_name');
+        $moduleName = $request->input('module_name');
 
-        $data['subjects'] = Subject::with('modules')->when($query, function ($queryBuilder) use ($query) {
-            $queryBuilder->where('sub_name', 'like', '%' . $query . '%')
-                 ->orWhereHas('modules', function ($getModule) use ($query) {
-                     $getModule->where('module_code', 'like', '%' . $query . '%');
-                 });
-        })->paginate(3);
+        $data['subjects'] = Subject::with('modules')
+            ->when($subjectName, function ($queryBuilder) use ($subjectName) {
+                $queryBuilder->where('sub_name', 'like', '%' . $subjectName . '%');
+            })
+            ->when($moduleName, function ($queryBuilder) use ($moduleName) {
+                $queryBuilder->whereHas('modules', function ($getModule) use ($moduleName) {
+                    $getModule->where('module_code', 'like', '%' . $moduleName . '%');
+                });
+            })
+            ->paginate(3);
 
         return view('Pages.subject.subjects', $data);
     }
@@ -159,7 +164,7 @@ class SubjectController extends Controller
         Subject::destroy($id);
         return redirect()->back()->with('success', 'Subject deleted successfully!');
     }
-   
+
     /**
      * Show the form for creating a new resource.
      */

@@ -6,24 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('results', function (Blueprint $table) {
+            $table->id();
             $table->string('studentId');
             $table->enum('result', ['passed', 'failed']);
-            $table->unsignedBigInteger('gradeId');
+            $table->unsignedBigInteger('gradeId'); // This matches grades table
             $table->timestamps();
-            $table->foreign('studentId')->references('studentId')->on('students');
-            $table->foreign('gradeId')->references('gradeId')->on('grades');
+
+            $table->foreign('studentId')->references('studentId')->on('students')->onDelete('cascade');
+            $table->foreign('gradeId')->references('gradeId')->on('grades')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('results');

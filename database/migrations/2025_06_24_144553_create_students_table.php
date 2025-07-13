@@ -6,29 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('studentId')->unique(); // trigger sets it
+            $table->string('studentId')->unique();
             $table->string('studentName', 60);
             $table->date('dateOfBirth')->nullable();
-            $table->integer('gradeId')->unsigned();
+            $table->unsignedBigInteger('gradeId'); // Changed to unsignedBigInteger
             $table->string('email', 100)->nullable();
             $table->string('phone', 50)->nullable();
             $table->string('address', 255)->nullable();
             $table->timestamps();
+
+            // Add foreign key
+            $table->foreign('gradeId')->references('gradeId')->on('grades')->onDelete('cascade');
         });
-
-
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('students');
