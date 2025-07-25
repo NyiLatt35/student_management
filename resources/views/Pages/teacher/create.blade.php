@@ -23,37 +23,6 @@
 
                         <!-- Form Content -->
                         <div class="py-2 px-3">
-                            {{-- <form action="{{ route('admin.teacher.store') }}" method="POST">
-                                @csrf
-
-
-
-                                <!-- Name field -->
-
-
-                                <!-- Email field -->
-
-
-                                <!-- Phone field -->
-
-
-                                <!-- Address field -->
-
-
-                                <!-- Subject dropdown -->
-
-
-                                <!-- Grade dropdown -->
-
-
-                                <!-- Password field -->
-
-
-                                <!-- Password confirmation -->
-
-
-                                <button type="submit" class="btn btn-primary">Create Teacher</button>
-                            </form> --}}
                             <form action="{{ route('admin.teacher.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="role" value="teacher">

@@ -65,7 +65,11 @@
                                     <tr>
                                         <td class="text-primary fw-semibold ps-4">{{ $teacher->teacher_id }}</td>
                                         <td class="fw-semibold">{{ $teacher->teacher_name }}</td>
-                                        <td><span class="badge bg-primary">{{ $teacher->subject->sub_name }}</span></td>
+                                        <td>
+                                            <span class="badge rounded-pill {{ $teacher->subject ? 'bg-primary' : 'bg-danger' }} text-white">
+                                                {{ $teacher->subject ? $teacher->subject->sub_name : 'No Subject Assigned' }}
+                                            </span>
+                                        </td>
                                         <td>{{ $teacher->teacher_email }}</td>
                                         <td>{{ $teacher->teacher_phone }}</td>
                                         <td class="pe-4">
@@ -121,7 +125,9 @@
                                         <h6 class="mb-1 fw-semibold">{{ $teacher->teacher_name }}</h6>
                                         <small class="text-primary fw-semibold">ID: {{ $teacher->teacher_id }}</small>
                                     </div>
-                                    <span class="badge bg-primary">{{ $teacher->subject->sub_name }}</span>
+                                    <span class="badge rounded-pill {{ $teacher->subject ? 'bg-primary' : 'bg-danger' }} text-white">
+                                        {{ $teacher->subject ? $teacher->subject->sub_name : 'No Subject Assigned' }}
+                                    </span>
                                 </div>
 
                                 <div class="mb-2">

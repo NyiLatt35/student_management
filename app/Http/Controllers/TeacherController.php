@@ -169,16 +169,125 @@ class TeacherController extends Controller
      */
     public function edit(string $id)
     {
-        //
-    }
+
+        $data['grades'] = Grade::all();
+        $data['subjects'] = Subject::all();
+        $data['teachers'] = Teacher::from('teachers as t')
+           ->join('subjects as s', 't.teacher_subject', '=', 's.id')
+           ->join('grades as g', 't.grade', '=', 'g.gradeId')
+           ->select('t.*', 's.sub_name', 'g.gradeName')
+           ->where('t.id', $id)
+           ->first();
+
+        if (!$data['teachers']) {
+            return redirect()->route('admin.teacher.index')->with('error', 'Teacher not found!');
+        }
+
+        return view('Pages.teacher.edit', $data);
+
+        }
+
+        /**
+         * Update the specified resource in storage.
+         */
+        public function update(Request $request, string $id)
+        {
+            try {
+                // Find the teacher first to get original values
+                $teacher = Teacher::findOrFail($id);
+                $originalEmail = $teacher->teacher_email;
+
+                // Check if email is changing
+                $emailChanging = $originalEmail !== $request->teacher_email;
+
+                // Validate the request data for update
+                $validationRules = [
+                    'teacher_name' => 'required|string|max:255',
+                    'teacher_phone' => 'nullable|string|max:15',
+                    'teacher_address' => 'nullable|string|max:255',
+                    'teacher_subject' => 'required|exists:subjects,id',
+                    'grade' => 'required|exists:grades,gradeId',
+                ];
+
+                // Only validate email uniqueness if it's changing
+                if ($emailChanging) {
+                    $validationRules['teacher_email'] = 'required|email|max:255|unique:teachers,teacher_email|unique:users,email';
+                } else {
+                    $validationRules['teacher_email'] = 'required|email|max:255';
+                }
+
+                // Only validate password if it's provided
+                if ($request->filled('teacher_password')) {
+                    $validationRules['teacher_password'] = 'required|string|min:8|confirmed';
+                }
+
+                $request->validate($validationRules);
+
+                DB::beginTransaction();
+
+                // Update teacher data
+                $updateData = [
+                    'teacher_name' => $request->teacher_name,
+                    'teacher_email' => $request->teacher_email,
+                    'teacher_phone' => $request->teacher_phone,
+                    'teacher_address' => $request->teacher_address,
+                    'teacher_subject' => $request->teacher_subject,
+                    'grade' => $request->grade,
+                ];
+
+                // Only update password if provided
+                if ($request->filled('teacher_password')) {
+                    $updateData['teacher_password'] = Hash::make($request->teacher_password);
+                }
+
+                $teacher->update($updateData);
+
+                // Update associated user record using original email
+                $userUpdateData = [
+                    'name' => $request->teacher_name,
+                    'email' => $request->teacher_email,
+                ];
+
+
+                // Only update email in users table if it's changing
+                if ($emailChanging) {
+                    $userUpdateData['email'] = $request->teacher_email;
+                }
+
+                // Only update password in users table if provided
+                if ($request->filled('teacher_password')) {
+                    $userUpdateData['password'] = Hash::make($request->teacher_password);
+                }
+
+                // Use original email to find and update the user record
+                $update = User::where('email', $originalEmail)->update($userUpdateData);
+                // dd($update);
+
+                DB::commit();
+
+                return redirect()->route('admin.teacher.index')
+                               ->with('success', 'Teacher updated successfully.');
+
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                return redirect()->back()
+                               ->withErrors($e->validator)
+                               ->withInput();
+            } catch (\Exception $e) {
+                DB::rollback();
+                Log::error('Teacher update failed: ' . $e->getMessage());
+                return redirect()->back()
+                               ->withInput()
+                               ->with('error', 'Failed to update teacher: ' . $e->getMessage());
+            }
+        }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    // public function update(Request $request, string $id)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.

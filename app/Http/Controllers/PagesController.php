@@ -15,11 +15,18 @@ class PagesController extends Controller
     }
 
     /**
+     * Show the application dashboard.
+     */
+    // public function dashboard()
+    // {
+    //     return view('Pages.home');
+    // }
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+
     }
 
     /**

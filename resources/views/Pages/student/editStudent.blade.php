@@ -4,17 +4,7 @@
 @section('content')
 
     <style>
-        .toast {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        }
-
-        .alert-danger {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 0.5rem 1rem rgba(220, 53, 69, 0.15);
-        }
+     
     </style>
 
 

@@ -14,211 +14,175 @@
 </head>
 
 <body>
-    @if (Auth::check())
-        <!-- Navbar -->
-        <header class="">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm ">
+    @if (Auth::check() && empty(Auth::user()->role))
+        <div class="container-fluid p-0">
+            @yield('content')
+        </div>
+    @else
+        <!--Main Navigation-->
+        <header>
+            @if (Auth::check())
+                <!-- Sidebar -->
+                <nav id="sidebarMenu" class="d-lg-block sidebar collapse mt-3 bg-white">
+                    <div class="position-sticky">
+                        <div class="list-group list-group-flush mx-3 mt-4">
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Dashboard</span>
+                            </a>
+                            <a href="{{ route('admin.student.index') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.student.index') ? 'active' : '' }}">
+                                <i class="fas fa-user-graduate fa-fw me-3"></i><span>Students</span>
+                            </a>
+                            <a href="{{ route('admin.teacher.index') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.teacher.index') ? 'active' : '' }}">
+                                <i class="fas fa-chalkboard-teacher fa-fw me-3"></i><span>Teachers</span>
+                            </a>
+                            <a href="{{ route('admin.subject.index') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.subject.index') ? 'active' : '' }}">
+                                <i class="fas fa-book fa-fw me-3"></i><span>Subjects</span>
+                            </a>
+                            <a href="{{ route('admin.lesson.index') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.lesson.index') ? 'active' : '' }}">
+                                <i class="fas fa-cube fa-fw me-3"></i><span>Modules</span>
+                            </a>
+                            <a href="{{ route('admin.rollcall.index') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.rollcall.*') ? 'active' : '' }}">
+                                <i class="fas fa-clipboard-list fa-fw me-3"></i><span>Attendance</span>
+                            </a>
+                            <a href="{{ route('admin.exam.index') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded">
+                                <i class="fas fa-file-alt fa-fw me-3"></i><span>Exam</span>
+                            </a>
+                            <a href="{{ route('admin.exam.result') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded">
+                                <i class="fas fa-file-alt fa-fw me-3"></i><span>Result</span>
+                            </a>
+                            <a href="#" class="list-group-item m-2 list-group-item-action py-2 rounded">
+                                <i class="fas fa-cog fa-fw me-3"></i><span>Settings</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            @endif
+            <!-- Navbar -->
+            <nav id="main-navbar" class="navbar navbar-expand-lg bg-white shadow-sm fixed-top">
+                <!-- Container wrapper -->
                 <div class="container-fluid">
-                    <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas"
-                        href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-                        <span class="navbar-toggler-icon"></span>
+                    <!-- Toggle button -->
+                    <button data-mdb-button-init class="navbar-toggler me-2" type="button" data-mdb-collapse-init
+                        data-mdb-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
                     </button>
 
-                    <a class="navbar-brand fw-bold" href="#">
-                        <i class="fas fa-graduation-cap text-primary me-2"></i>
-                        SMS Dashboard
+                    <!-- Brand -->
+                    <a class="navbar-brand text-decoration-none" href="#">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-primary rounded-circle p-2 me-3">
+                                <i class="fas fa-graduation-cap text-white fs-4"></i>
+                            </div>
+                            <div class="d-none d-lg-block">
+                                <h4 class="mb-0 fw-bold text-primary">SMS Education</h4>
+                            </div>
+                        </div>
                     </a>
 
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                {{-- <img src="https://via.placeholder.com/32" class="rounded-circle me-1" width="32"> --}}
-                                <span class="d-none d-lg-inline">
-                                    @if (session('status'))
-                                        <div class="alert alert-success" role="alert">
-                                            {{ session('status') }}
-                                        </div>
-                                    @endif
-                                    {{ Auth::user()->name }}
-                                    {{-- @if (Auth::check())
-                                    {{ Auth::user()->name }}
-                                @endif --}}
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item">
-                                            <i class="fas fa-sign-out-alt me-2"></i>
-                                            Logout
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
-        </header>
-        <!-- Sidebar -->
-        <div class="mt-2">
-            <nav id="sidebarMenu" class="sidebar">
-                <div class="position-sticky">
-                    <div class="list-group list-group-flush mt-4">
-                        <a href="{{ route('admin.home') }}"
-                            class="nav-link {{ request()->routeIs('admin.home') ? 'active' : '' }}">
-                            <i class="fas fa-tachometer-alt"></i>
-                            <span>Dashboard</span>
-                        </a>
-                        <a href="{{ route('admin.student.index') }}"
-                            class="nav-link {{ request()->routeIs('admin.student.index') ? 'active' : '' }}">
-                            <i class="fas fa-user-graduate"></i>
-                            <span>Student</span>
-                        </a>
-                        {{-- <ul class="nav-item list-unstyled m-0">
-                            <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#studentMenu" role="button"
-                                aria-expanded="{{ request()->routeIs('admin.student.index') || request()->routeIs('admin.student.create') ? 'true' : 'false' }}"
-                                aria-controls="studentMenu">
-                                <div class="">
-                                    <i class="fas fa-user-graduate me-2"></i>
-                                    <span>Student</span>
-                                </div>
-                                <i class="fas fa-chevron-down text-muted small"></i>
-                            </a>
-
-                            <div class="collapse ps-4 ms-2 border-start border-2 {{ request()->routeIs('admin.student.index') || request()->routeIs('admin.student.create') ? 'show' : '' }}"
-                                id="studentMenu">
-                                <ul class="nav flex-column mt-2">
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.student.index') }}"
-                                            class="nav-link {{ request()->routeIs('admin.student.index') ? 'active' : '' }}">
-                                            <i class="fas fa-list"></i>
-                                            <span>Student List</span>
-                                        </a>
+                    <!-- Right links -->
+                    <ul class="navbar-nav ms-auto d-flex flex-row">
+                        <!-- Avatar -->
+                        @if (Auth::check())
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
+                                    id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="fas fa-user-circle fa-2x text-primary me-2"></i>
+                                    <span class="ms-2 d-none d-md-inline">{{ Auth::user()->name }}</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                    <li>
+                                        <a class="dropdown-item" href="#">My profile</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.student.create') }}"
-                                            class="nav-link {{ request()->routeIs('admin.student.create') ? 'active' : '' }}">
-                                            <i class="fas fa-user-plus me-2 text-secondary"></i>
-                                            Add Student
-                                        </a>
+                                    <li>
+                                        <a class="dropdown-item" href="#">Settings</a>
+                                    </li>
+                                    <li>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item">Logout</button>
+                                        </form>
                                     </li>
                                 </ul>
-                            </div>
-                        </ul> --}}
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">Register</a>
+                            </li>
+                        @endif
+                    </ul>
+                </div>
+                <!-- Container wrapper -->
+            </nav>
+            <!-- Navbar -->
+        </header>
+        <!--Main Navigation-->
 
-                        <a href="{{ route('admin.teacher.index') }}" class="nav-link {{ request()->routeIs('admin.teacher.index') ? 'active' : '' }}">
-                            <i class="fas fa-chalkboard-teacher"></i>
-                            <span>Teachers</span>
-                        </a>
-                        <a href="{{ route('admin.subject.index') }}" class="nav-link {{ request()->routeIs('admin.subject.index') || request()->routeIs('admin.subject.edit') ? 'active' : '' }}">
-                            <i class="fas fa-book"></i>
-                            <span>Subjects</span>
-                        </a>
-                        <a href="{{ route('admin.lesson.index') }}" class="nav-link {{ request()->routeIs('admin.lesson.index') ? 'active' : '' }}">
-                            <i class="fas fa-cube"></i>
-                            <span>Module</span>
-                        </a>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-chart-line"></i>
-                            <span>Reports</span>
-                        </a>
-                        <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#attendanceMenu" role="button"
-                            aria-expanded="{{ request()->routeIs('admin.rollcall.index') || request()->routeIs('admin.rollcall.studentAttendanceReport') ? 'true' : 'false' }}"
-                            aria-controls="attendanceMenu">
-                            <div class="">
-                                <i class="fas fa-clipboard-list me-2"></i>
-                                <span>Attendance</span>
-                            </div>
-                            <i class="fas fa-chevron-down text-muted small"></i>
-                        </a>
+        <!--Main layout-->
+        @hasSection('title')
+            <main class="main-content">
+                <div class="container-fluid">
+                    <!-- Breadcrumb -->
+                    @if (Auth::check())
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
+                            </ol>
+                        </nav>
+                    @endif
 
-                        <div class="collapse ps-4 ms-2 border-start border-2 {{ request()->routeIs('admin.rollcall.index') || request()->routeIs('admin.rollcall.studentAttendanceReport') ? 'show' : '' }}"
-                            id="attendanceMenu">
-                            <ul class="nav flex-column mt-2">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.rollcall.index') }}"
-                                        class="nav-link {{ request()->routeIs('admin.rollcall.index') ? 'active' : '' }}">
-                                        <i class="fas fa-list"></i>
-                                        <span>Attendance Records</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.rollcall.studentAttendanceReport') }}"
-                                        class="nav-link {{ request()->routeIs('admin.rollcall.studentAttendanceReport') ? 'active' : '' }}">
-                                        <i class="fas fa-list-alt"></i>
-                                        <span>Attendance Report</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-cog"></i>
-                            <span>Settings</span>
-                        </a>
+                    <div class="content-wrapper">
+                        @yield('content')
                     </div>
                 </div>
-            </nav>
+            </main>
+        @else
+            <main class="main-content p-0 m-0">
+                <div class="container-fluid">
+                    <div class="content-wrapper">
+                        @yield('content')
+                    </div>
+                </div>
+            </main>
+        @endif
 
-        </div>
-        <div class="sidebar-overlay"></div>
-        <!-- Main content -->
-        <main class="main-content">
-            <!-- Breadcrumb -->
-            <div class="m-2">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item  font-bold"><a href="{{ route('admin.home') }}"
-                                class="text-decoration-none">Home</a></li>
-                        <li class="breadcrumb-item active">
-                            @if (request()->routeIs('admin.student.create') || request()->routeIs('admin.student.edit'))
-                                <a href="{{ route('admin.student.index') }}"
-                                    class="text-decoration-none">Students_List</a> /
-                            @endif
-                            {{ request()->routeIs('admin.home') ? 'Dashboard' : View::yieldContent('title') }}
-                        </li>
-
-                    </ol>
-                </nav>
-            </div>
-
-            <!-- Page content -->
-            <div class="container-fluid p-0">
-                @yield('content')
-            </div>
-        </main>
-    @else
-        <main class="container d-flex align-items-center justify-content-center vh-100">
-            <div class="container-fluid p-0">
-                @yield('content')
-            </div>
-        </main>
     @endif
-
 
     {{-- Toast Container --}}
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        @if (session('success') || session('error'))
-            <div class="toast show align-items-center {{ session('success') ? 'text-bg-success' : 'text-bg-danger' }} border-0" role="alert" aria-live="assertive"
+        @if (session('success'))
+            <div class="toast show align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
                 aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
                         <div class="d-flex align-items-center">
-                            @if (session('success'))
-                                <i class="fas fa-check-circle me-2"></i>
-                                @else
-                                <i class="fas fa-cancel me-2"></i>
-                            @endif
-                            {{ session('success') ? session('success') : session('error') }}
+                            <i class="fas fa-check-circle me-2"></i>
+                            {{ session('success') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @elseif (session('error'))
+            <div class="toast show align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+                aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            {{ session('error') }}
                         </div>
                     </div>
                 </div>
@@ -226,11 +190,8 @@
         @endif
     </div>
 
-    <style>
-
-    </style>
     <!-- jQuery first, then Bootstrap JS -->
-   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -241,7 +202,7 @@
 
         // Hide sidebar when clicking outside on mobile
         document.addEventListener('click', function(event) {
-            if (window.innerWidth <!event.target.closest('.sidebar') && !event.target.closest(
+            if (window.innerWidth < !event.target.closest('.sidebar') && !event.target.closest(
                     '.navbar-toggler')) {
                 document.querySelector('.sidebar').classList.remove('show');
             }
