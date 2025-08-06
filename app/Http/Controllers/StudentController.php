@@ -6,6 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Student;
 use App\Models\Grade;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
+
+use Exception;
+
 
 class StudentController extends Controller
 {
@@ -40,22 +48,44 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validateStudentData($request);
+
         try {
-            $this->validateStudentData($request);
 
-            $studentData = $this->getStudentData($request);
+            $student = DB::transaction(function () use ($request) {
+                // 1. Create User Account
+                $defaultPassword = "password@1234";
 
-            $student = Student::create($studentData);
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($defaultPassword),
+                    'role' => 'user', // Assign a default role
+                ]);
+
+                // 2. Get Student Data, passing the new user's ID
+                $studentData = $this->getStudentData($request, false, $user->id);
+
+                // Handle file upload
+                if ($request->hasFile('photo')) {
+                    $path = $request->file('photo')->store('student_photos', 'public');
+                    $studentData['photo'] = $path;
+                }
+                // dd($studentData);
+                // 3. Create the Student record
+                return Student::create($studentData);
+            });
 
             return redirect()
-                ->route('admin.student.create')
-                ->with('success', 'Student created successfully.')
+                ->route('student.index')
+                ->with('success', 'Student and user account created successfully.')
                 ->with('student', $student);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            // If anything goes wrong, redirect back with an error
             return redirect()
                 ->back()
-                ->withErrors(['error' => $e->getMessage()])
+                ->with(['error' => 'An error occurred: ' . $e->getMessage()])
                 ->withInput();
         }
     }
@@ -67,7 +97,7 @@ class StudentController extends Controller
     {
         $details = Student::where('studentId', $id)->first();
         if (!$details) {
-            return redirect()->route('admin.student.index')->with('error', 'Student not found');
+            return redirect()->route('student.index')->with('error', 'Student not found');
         }
         return view('Pages.student.studentDetails', compact('details'));
     }
@@ -79,38 +109,61 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         $editStudent = Student::where('studentId', $id)->first();
+
         if (!$editStudent) {
-            return redirect()->route('admin.student.index')->with('error', 'Student not found');
+            return redirect()->route('student.index')->with('error', 'Student not found');
         }
         $grades = Grade::all();
         return view('Pages.student.editStudent', compact('editStudent', 'grades'));
     }
 
-    /**
+      /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        $this->validateStudentData($request);
+        // $this->validateStudentData($request);
         $student = Student::where('studentId', $id)->first();
 
         if (!$student) {
-            return redirect()->route('admin.student.index')->with('error', 'Student not found');
+            return redirect()->route('student.index')->with('error', 'Student not found');
         }
 
-        $studentData = $this->getStudentData($request, true, $student->studentId);
-        $student->update($studentData);
+        $studentData = $this->getStudentData($request, true, $student->studentId, $student->user_id);
+        $oldEmail = $student->email;
+        $newEmail = $request->email;
 
-        return redirect()->route('admin.student.index')->with('success', 'Student updated successfully');
+        if ($oldEmail !== $newEmail) {
+            $request->validate([
+                'email' => 'unique:students,email|unique:users,email,' . $student->user->user_id
+            ]);
+
+            $student->update(['email' => $newEmail]);
+            $student->user->update(['email' => $newEmail]);
+        }
+
+        return redirect()->route('student.index')->with('success', 'Student updated successfully');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        Student::where('studentId', $id)->delete();
-        return redirect()->route('admin.student.index')->with('success', 'Student deleted successfully');
+        $student = Student::where('studentId', $id)->first();
+        if ($student) {
+            // Delete the student record
+            $student->delete();
+
+            // Delete the associated user record
+            User::where('email', $student->email)->delete();
+
+            return redirect()->route('student.index')->with('success', 'Student deleted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Student not found');
     }
 
 
@@ -119,13 +172,20 @@ class StudentController extends Controller
      */
     public function validateStudentData(Request $request)
     {
+        // Updated validation rules
         Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'grade' => 'required|integer',
+            'dob' => 'required|date',
+            'gender' => 'required|string|in:Male,Female',
+            // 'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'grade' => 'required|integer|exists:grades,gradeId',
+            'enrollmentDate' => 'required|date',
             'phone' => 'required|string|max:15',
-            'email' => 'required|email|max:255',
+            // IMPORTANT: Ensure email is unique in the 'users' table
+            'email' => 'required|email|max:255|unique:users,email' . ($request->route('user') ? ',' . (Student::find($request->route('user'))?->user?->id ?? '') : ''),
             'address' => 'required|string|max:255',
-            'dob' => 'nullable|date',
+            'parentName' => 'required|string|max:255',
+            'parentPhone' => 'required|string|max:15',
         ])->validate();
     }
 
@@ -134,6 +194,7 @@ class StudentController extends Controller
      */
     // <?php
     public function getStudentData(Request $request, $isUpdate = false, $existingId = null)
+
     {
         $grade = Grade::find($request->grade);
         if (!$grade) {
@@ -172,14 +233,24 @@ class StudentController extends Controller
             }
         }
 
+        // Get user ID from users table by email
+        $userId = User::where('email', $request->email)->value('id');
+
         return [
-            'studentId' => $studentId,
+            'studentId' => $studentId, // Your logic for generating ID
+            'user_id' => $userId, // <-- Add the user_id
             'studentName' => $request->name,
+            'dateOfBirth' => $request->dob,
+            'role' => 'user', // Default role for students
+            'gender' => $request->gender,
             'gradeId' => $request->grade,
+            'enrollmentDate' => $request->enrollmentDate,
             'phone' => $request->phone,
             'email' => $request->email,
             'address' => $request->address,
-            'dateOfBirth' => $request->dob,
+            'parentName' => $request->parentName,
+            'parentPhone' => $request->parentPhone,
+            // 'photo' is handled separately in the store method
         ];
     }
 
@@ -225,3 +296,4 @@ class StudentController extends Controller
         }
     }
 }
+

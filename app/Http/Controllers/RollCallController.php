@@ -7,7 +7,9 @@ use App\Models\Grade;
 use App\Models\Student;
 use App\Models\Rollcall;
 use App\Models\Attendance;
-use Illuminate\Support\Facades\DB;
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use Exception;
@@ -113,6 +115,7 @@ class RollCallController extends Controller
         $data['grades'] = Grade::all();
         $data['attendances'] = Attendance::all();
         $data['getRecord'] = Rollcall::getStudentAttendanceRecord();
+        $data['teacherGradeId'] = Teacher::where('teacher_email', Auth::user()->email)->first()->grade;
         return view("Pages.rollcall.attendanceReport", $data);
     }
 

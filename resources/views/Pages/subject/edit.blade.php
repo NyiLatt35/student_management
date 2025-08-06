@@ -11,7 +11,7 @@
                         <h1 class="h3 mb-0">Edit Subject</h1>
                         <p class="text-muted">Update subject information</p>
                     </div>
-                    <a href="{{ route('admin.subject.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('subject.index') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-2"></i>Back to Subjects
                     </a>
                 </div>
@@ -22,7 +22,7 @@
                         <div class="card shadow rounded-4 border-0">
 
                             <div class="card-body p-4">
-                                <form action="{{ route('admin.subject.update', $subject->id) }}" method="POST">
+                                <form action="{{ route('subject.update', $subject->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
 
@@ -119,7 +119,7 @@
 
                                     <!-- Action Buttons -->
                                     <div class="d-flex gap-3 justify-content-end">
-                                        <a href="{{ route('admin.subject.index') }}"
+                                        <a href="{{ route('subject.index') }}"
                                             class="btn btn-outline-secondary px-4 py-2 rounded-3">
                                             <i class="fas fa-times me-2"></i>Cancel
                                         </a>

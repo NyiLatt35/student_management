@@ -15,7 +15,7 @@
         <!-- Search Form -->
         <div class="card shadow-sm rounded-4 border-0 mb-4">
             <div class="card-body p-4">
-                <form action="{{ route('admin.rollcall.create') }}" method="GET">
+                <form action="{{ route('rollcall.create') }}" method="GET">
                     <div class="row g-3 align-items-end">
                         <div class="col-md-4">
                             <label class="form-label fw-semibold small text-muted">
@@ -49,7 +49,7 @@
                             <button type="submit" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm flex-grow-1">
                                 <i class="fas fa-search me-2"></i>Search
                             </button>
-                            <a href="{{ route('admin.rollcall.index') }}"
+                            <a href="{{ route('rollcall.index') }}"
                                class="btn btn-outline-secondary px-3 py-2 rounded-3 shadow-sm">
                                 <i class="fas fa-redo"></i>
                             </a>
@@ -316,7 +316,7 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('admin.rollcall.store') }}",
+                    url: "{{ route('rollcall.store') }}",
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

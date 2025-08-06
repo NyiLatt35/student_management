@@ -23,7 +23,7 @@
 
                         <!-- Form Content -->
                         <div class="py-2 px-3">
-                            <form action="{{ route('admin.teacher.update', $teachers->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('teacher.update', $teachers->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="role" value="teacher">
@@ -179,7 +179,7 @@
                                 <!-- Action Buttons -->
                                 <div class="border-top pt-4">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <a href="{{ route('admin.teacher.index') }}" class="btn btn-light btn-lg px-4">
+                                        <a href="{{ route('teacher.index') }}" class="btn btn-light btn-lg px-4">
                                             <i class="fas fa-arrow-left me-2"></i>Back to List
                                         </a>
                                         <div class="d-flex gap-3">

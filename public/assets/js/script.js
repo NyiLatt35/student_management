@@ -1,4 +1,3 @@
-// Initialization for ES Users
-import { Dropdown, Collapse, initMDB } from "mdb-ui-kit";
+import { Dropdown, Collapse, Carousel, initMDB } from 'https://cdn.jsdelivr.net/npm/mdb-ui-kit/+esm';
 
-initMDB({ Dropdown, Collapse });
+initMDB({ Dropdown, Collapse, Carousel });

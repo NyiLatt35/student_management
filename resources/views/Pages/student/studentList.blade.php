@@ -28,7 +28,7 @@
 
                 <!-- Add Button -->
                 <div>
-                    <a href="{{ route('admin.student.create') }}" class="btn btn-primary btn-add px-4">
+                    <a href="{{ route('student.create') }}" class="btn btn-primary btn-add px-4">
                         <i class="fas fa-plus me-2"></i>
                         <span class="d-none d-sm-inline">Add Student</span>
                         <span class="d-inline d-sm-none">Add</span>
@@ -54,7 +54,7 @@
                         <h5 class="fw-bold text-dark mb-3">No Students Found</h5>
                         <p class="text-muted mb-4">There are no students in the system yet.</p>
                         @if (!request('query'))
-                            <a href="{{ route('admin.student.create') }}"
+                            <a href="{{ route('student.create') }}"
                                 class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm hover-lift">
                                 <i class="fas fa-plus-circle me-2"></i>
                                 Add New Student
@@ -97,13 +97,13 @@
                                     <td class="py-3 px-4">
                                         <div class="d-flex justify-content-center gap-2">
                                             {{-- Edit Action for Student --}}
-                                            <a href="{{ route('admin.student.edit', $student->studentId) }}"
+                                            <a href="{{ route('student.edit', $student->studentId) }}"
                                                 class="btn btn-sm btn-light-primary" data-bs-toggle="tooltip"
                                                 title="Edit Student">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             {{-- View Student Information Details --}}
-                                            <a href="{{ route('admin.student.show', $student->studentId) }}"
+                                            <a href="{{ route('student.show', $student->studentId) }}"
                                                 class="btn btn-sm btn-info d-flex align-items-center"
                                                 data-bs-toggle="tooltip" title="View Details">
                                                 <i class="fas fa-eye text-white"></i>
@@ -117,7 +117,7 @@
                                         </div>
                                         {{-- Delete form --}}
                                         <form id="deleteForm{{ $student->studentId }}"
-                                            action="{{ route('admin.student.destroy', $student->studentId) }}"
+                                            action="{{ route('student.destroy', $student->studentId) }}"
                                             method="POST" class="d-none">
                                             @csrf
                                             @method('DELETE')
@@ -190,11 +190,11 @@
 
                             <!-- Actions -->
                             <div class="d-flex justify-content-end gap-2 p-4 border-top">
-                                <a href="{{ route('admin.student.edit', $student->studentId) }}"
+                                <a href="{{ route('student.edit', $student->studentId) }}"
                                     class="btn btn-sm btn-primary d-flex align-items-center">
                                     <i class="fas fa-edit me-1"></i> Edit
                                 </a>
-                                <a href="{{ route('admin.student.show', $student->studentId) }}"
+                                <a href="{{ route('student.show', $student->studentId) }}"
                                     class="btn btn-sm btn-info text-white d-flex align-items-center">
                                     <i class="fas fa-eye me-1"></i>
                                     Details

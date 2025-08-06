@@ -66,7 +66,7 @@ class ModulesController extends Controller
         // Create the new lesson
         // dd($data['modules']);
         Module::create($data['modules']);
-        return redirect()->route('admin.lesson.index')->with('success', 'Lesson created successfully.');
+        return redirect()->route('lesson.index')->with('success', 'Lesson created successfully.');
 
     }
 
@@ -112,7 +112,7 @@ class ModulesController extends Controller
         // // Create the new lesson
         // Module::create($data);
 
-        // return redirect()->route('admin.lesson.index')->with('success', 'Lesson created successfully.');
+        // return redirect()->route('lesson.index')->with('success', 'Lesson created successfully.');
     // }
 
     /**
@@ -151,7 +151,7 @@ class ModulesController extends Controller
     //     dd($data);
 
     //     Module::update($data);
-    //     return redirect()->route('admin.lesson.index')->with('success', 'Lesson updated successfully.');
+    //     return redirect()->route('lesson.index')->with('success', 'Lesson updated successfully.');
 
     //     }
 
@@ -197,7 +197,7 @@ class ModulesController extends Controller
     //         dd($newData);
     //         $existingModule->update($newData);
 
-    //         return redirect()->route('admin.lesson.index')->with('success', 'Lesson updated successfully.');
+    //         return redirect()->route('lesson.index')->with('success', 'Lesson updated successfully.');
     // }
 
     /**

@@ -12,10 +12,10 @@
                     <p class="text-muted">{{ $subject->sub_name }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('admin.subject.edit', $subject->id) }}" class="btn btn-primary me-2">
+                    <a href="{{ route('subject.edit', $subject->id) }}" class="btn btn-primary me-2">
                         <i class="fas fa-edit me-1"></i>Edit
                     </a>
-                    <a href="{{ route('admin.subject.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('subject.index') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-1"></i>Back
                     </a>
                 </div>
@@ -58,7 +58,7 @@
                         <div class="text-center py-4">
                             <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
                             <p class="text-muted">No modules associated with this subject</p>
-                            <a href="{{ route('admin.subject.edit', $subject->id) }}" class="btn btn-primary">
+                            <a href="{{ route('subject.edit', $subject->id) }}" class="btn btn-primary">
                                 <i class="fas fa-plus me-1"></i>Add Modules
                             </a>
                         </div>

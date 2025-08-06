@@ -20,7 +20,7 @@
                         <button type="submit" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm">
                             <i class="fas fa-search me-2"></i>Search
                         </button>
-                        <a href="{{ route('admin.teacher.index') }}"
+                        <a href="{{ route('teacher.index') }}"
                             class="btn btn-outline-secondary px-3 py-2 rounded-3 shadow-sm">
                             <i class="fas fa-redo"></i>
                         </a>
@@ -36,7 +36,7 @@
                 <h1 class="h3 mb-0">Teachers Management</h1>
                 <p class="text-muted mb-0">Manage and organize your teaching staff</p>
             </div>
-            <a href="{{ route('admin.teacher.create') }}" class="btn btn-primary shadow-sm">
+            <a href="{{ route('teacher.create') }}" class="btn btn-primary shadow-sm">
                 <i class="fas fa-plus me-2 d-none d-sm-inline"></i>
                 <span class="d-none d-sm-inline">Add Teacher</span>
                 <i class="fas fa-plus d-sm-none"></i>
@@ -75,13 +75,13 @@
                                         <td class="pe-4">
                                             <div class="d-flex justify-content-center gap-2">
                                                 {{-- Edit Action for teacher --}}
-                                                <a href="{{ route('admin.teacher.edit', $teacher->id) }}"
+                                                <a href="{{ route('teacher.edit', $teacher->id) }}"
                                                     class="btn btn-sm btn-light-primary" data-bs-toggle="tooltip"
                                                     title="Edit teacher">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 {{-- View teacher Information Details --}}
-                                                <a href="{{ route('admin.teacher.show', $teacher->id) }}"
+                                                <a href="{{ route('teacher.show', $teacher->id) }}"
                                                     class="btn btn-sm btn-info d-flex align-items-center"
                                                     data-bs-toggle="tooltip" title="View Details">
                                                     <i class="fas fa-eye text-white"></i>
@@ -95,7 +95,7 @@
                                             </div>
                                             {{-- Delete form --}}
                                             <form id="deleteForm{{ $teacher->id }}"
-                                                action="{{ route('admin.teacher.destroy', $teacher->id) }}" method="POST"
+                                                action="{{ route('teacher.destroy', $teacher->id) }}" method="POST"
                                                 class="d-none">
                                                 @csrf
                                                 @method('DELETE')
@@ -140,15 +140,15 @@
                                 </div>
 
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('admin.teacher.edit', $teacher->id) }}"
+                                    <a href="{{ route('teacher.edit', $teacher->id) }}"
                                         class="btn btn-sm btn-outline-primary flex-fill">
                                         <i class="fas fa-edit me-1"></i>Edit
                                     </a>
-                                    <a href="{{ route('admin.teacher.show', $teacher->id) }}"
+                                    <a href="{{ route('teacher.show', $teacher->id) }}"
                                         class="btn btn-sm btn-outline-info flex-fill">
                                         <i class="fas fa-eye me-1"></i>View
                                     </a>
-                                    <a href="{{ route('admin.teacher.destroy', $teacher->id) }}"
+                                    <a href="{{ route('teacher.destroy', $teacher->id) }}"
                                         class="btn btn-sm btn-outline-danger flex-fill">
                                         <i class="fas fa-trash me-1"></i>Delete
                                     </a>

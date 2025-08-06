@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = "/admin/dashboard";
+    protected $redirectTo = "/dashboard";
 
     /**
      * Create a new controller instance.
@@ -48,6 +48,6 @@ class LoginController extends Controller
 
         // $request->session()->regenerateToken();
 
-        return redirect('/login'); // Redirect to the login page
+        return redirect('/'); // Redirect to the login page
     }
 }

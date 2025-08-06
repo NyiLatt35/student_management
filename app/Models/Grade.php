@@ -13,5 +13,13 @@ class Grade extends Model
 {
     return $this->belongsTo(Grade::class, 'gradeId', 'gradeId');
 }
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'gradeId', 'gradeId');
+    }
+    public function teachers()
+    {
+        return $this->hasMany(Teacher::class, 'grade', 'gradeId');
+    }
 }
 

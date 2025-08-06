@@ -1,4 +1,4 @@
-@extends('main')
+{{-- @extends('main')
 @section('title', 'Student Details')
 @section('content')
 <div class="container py-4">
@@ -137,12 +137,134 @@
 
                 <!-- Back Button -->
                 <div class="d-flex justify-content-end mt-4">
-                    <a href="{{ route('admin.student.index') }}"
+                    <a href="{{ route('student.index') }}"
                        class="btn btn-light hover-lift px-4"
                        style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                         <i class="fas fa-arrow-left me-2"></i>Back to List
                     </a>
                 </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@endsection --}}
+
+
+@extends('main')
+@section('title', 'Student Profile - ' . $details->studentName)
+@section('content')
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Header and Action Buttons -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 mb-0">Student Profile</h2>
+                <div>
+                    <a href="{{ route('student.edit', $details->studentId) }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </a>
+                    <a href="{{ route('student.index') }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-arrow-left me-1"></i> Back to List
+                    </a>
+                </div>
+            </div>
+
+            <!-- Profile Summary Card -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        @if($details->photo)
+                            <img src="{{ asset('storage/' . $details->photo) }}" alt="Photo of {{ $details->studentName }}"
+                                 class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                        @else
+                             <div class="d-flex justify-content-center align-items-center bg-light rounded-circle me-3"
+                                 style="width: 80px; height: 80px;">
+                                <i class="fas fa-user fa-2x text-secondary"></i>
+                            </div>
+                        @endif
+                        <div>
+                            <h4 class="card-title mb-0">{{ $details->studentName }}</h4>
+                            <p class="text-muted mb-0">ID: {{ $details->studentId }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact & Personal Information Card -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Contact & Personal Information</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Email Address</span>
+                        <strong>{{ $details->email }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Phone Number</span>
+                        <strong>{{ $details->phone }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Date of Birth</span>
+                        <strong>{{ \Carbon\Carbon::parse($details->dateOfBirth)->format('F d, Y') }}</strong>
+                    </li>
+                     <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Gender</span>
+                        <strong>{{ $details->gender }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Address</span>
+                        <strong class="text-end">{{ $details->address }}</strong>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Academic Information Card -->
+            <div class="card shadow-sm border-0 mb-4">
+                 <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Academic Information</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Grade</span>
+                        <strong>Grade-{{ $details->grade->gradeName ?? $details->gradeId }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Enrollment Date</span>
+                        <strong>{{ \Carbon\Carbon::parse($details->enrollmentDate)->format('F d, Y') }}</strong>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Parent/Guardian Information Card -->
+            <div class="card shadow-sm border-0 mb-4">
+                 <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Parent/Guardian Information</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Name</span>
+                        <strong>{{ $details->parentName }}</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Phone Number</span>
+                        <strong>{{ $details->parentPhone }}</strong>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Delete Action -->
+            <div class="text-center">
+                 <form action="{{ route('student.destroy', $details->studentId) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this student? This action cannot be undone.');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-link text-danger">
+                        <i class="fas fa-trash-alt me-1"></i>Delete Student Record
+                    </button>
+                </form>
             </div>
 
         </div>

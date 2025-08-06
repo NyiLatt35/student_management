@@ -85,7 +85,7 @@ class TeacherController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.teacher.index')
+            return redirect()->route('teacher.index')
                             ->with('success', 'Teacher created successfully.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -137,7 +137,7 @@ class TeacherController extends Controller
     //         // dd([$user, $teacher]);
     //         DB::commit();
 
-    //         return redirect()->route('admin.teacher.index')->with('success', 'Teacher created successfully.');
+    //         return redirect()->route('teacher.index')->with('success', 'Teacher created successfully.');
 
     //     } catch (\Exception $e) {
     //         DB::rollback();
@@ -154,10 +154,8 @@ class TeacherController extends Controller
         $data['teacher'] = Teacher::with(['subject', 'gradeLevel'])
             ->where('id', $id)
             ->first();
-        // dd($data['teacher']);
-        // Check if teacher exists
         if (!$data['teacher']) {
-            return redirect()->route('admin.teacher.index')->with('error', 'Teacher not found!');
+            return redirect()->route('teacher.index')->with('error', 'Teacher not found!');
         }
 
         return view('Pages.teacher.details', $data);
@@ -180,7 +178,7 @@ class TeacherController extends Controller
            ->first();
 
         if (!$data['teachers']) {
-            return redirect()->route('admin.teacher.index')->with('error', 'Teacher not found!');
+            return redirect()->route('teacher.index')->with('error', 'Teacher not found!');
         }
 
         return view('Pages.teacher.edit', $data);
@@ -265,7 +263,7 @@ class TeacherController extends Controller
 
                 DB::commit();
 
-                return redirect()->route('admin.teacher.index')
+                return redirect()->route('teacher.index')
                                ->with('success', 'Teacher updated successfully.');
 
             } catch (\Illuminate\Validation\ValidationException $e) {
@@ -282,14 +280,6 @@ class TeacherController extends Controller
         }
 
     /**
-     * Update the specified resource in storage.
-     */
-    // public function update(Request $request, string $id)
-    // {
-    //     //
-    // }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
@@ -304,7 +294,7 @@ class TeacherController extends Controller
             // Also delete the associated user record
             User::where('email', $teacher->teacher_email)->delete();
 
-            return redirect()->route('admin.teacher.index')->with('success', 'Teacher deleted successfully.');
+            return redirect()->route('teacher.index')->with('success', 'Teacher deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to delete teacher: ' . $e->getMessage());
         }

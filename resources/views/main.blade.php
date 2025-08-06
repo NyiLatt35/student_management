@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }} ">
     <link rel="stylesheet" href="{{ asset('assets/css/pagination.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -21,41 +22,47 @@
     @else
         <!--Main Navigation-->
         <header>
-            @if (Auth::check())
+            @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'teacher'))
                 <!-- Sidebar -->
                 <nav id="sidebarMenu" class="d-lg-block sidebar collapse mt-3 bg-white">
                     <div class="position-sticky">
                         <div class="list-group list-group-flush mx-3 mt-4">
-                            <a href="{{ route('admin.dashboard') }}"
-                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('dashboard') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                                 <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Dashboard</span>
                             </a>
-                            <a href="{{ route('admin.student.index') }}"
-                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.student.index') ? 'active' : '' }}">
-                                <i class="fas fa-user-graduate fa-fw me-3"></i><span>Students</span>
-                            </a>
-                            <a href="{{ route('admin.teacher.index') }}"
-                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.teacher.index') ? 'active' : '' }}">
-                                <i class="fas fa-chalkboard-teacher fa-fw me-3"></i><span>Teachers</span>
-                            </a>
-                            <a href="{{ route('admin.subject.index') }}"
-                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.subject.index') ? 'active' : '' }}">
-                                <i class="fas fa-book fa-fw me-3"></i><span>Subjects</span>
-                            </a>
-                            <a href="{{ route('admin.lesson.index') }}"
-                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.lesson.index') ? 'active' : '' }}">
-                                <i class="fas fa-cube fa-fw me-3"></i><span>Modules</span>
-                            </a>
-                            <a href="{{ route('admin.rollcall.index') }}"
-                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('admin.rollcall.*') ? 'active' : '' }}">
-                                <i class="fas fa-clipboard-list fa-fw me-3"></i><span>Attendance</span>
-                            </a>
-                            <a href="{{ route('admin.exam.index') }}"
-                                class="list-group-item m-2 list-group-item-action py-2 rounded">
+                            @if (Auth::user()->role == 'admin')
+                                <a href="{{ route('subject.index') }}"
+                                    class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('subject.*') ? 'active' : '' }}">
+                                    <i class="fas fa-book fa-fw me-3"></i><span>Subjects</span>
+                                </a>
+                                <a href="{{ route('lesson.index') }}"
+                                    class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('lesson.*') ? 'active' : '' }}">
+                                    <i class="fas fa-cube fa-fw me-3"></i><span>Modules</span>
+                                </a>
+                                <a href="{{ route('teacher.index') }}"
+                                    class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('teacher.*') ? 'active' : '' }}">
+                                    <i class="fas fa-chalkboard-teacher fa-fw me-3"></i><span>Teachers</span>
+                                </a>
+                                <a href="{{ route('student.index') }}"
+                                    class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('student.*') ? 'active' : '' }}">
+                                    <i class="fas fa-user-graduate fa-fw me-3"></i><span>Students</span>
+                                </a>
+                            @endif
+                            <a href="{{ route('exam.index') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('exam.index') ? 'active' : '' }}">
                                 <i class="fas fa-file-alt fa-fw me-3"></i><span>Exam</span>
                             </a>
-                            <a href="{{ route('admin.exam.result') }}"
-                                class="list-group-item m-2 list-group-item-action py-2 rounded">
+                            <a href="{{ route('rollcall.index') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('rollcall.index') ? 'active' : '' }}">
+                                <i class="fas fa-clipboard-list fa-fw me-3"></i><span>Attendance</span>
+                            </a>
+                            <a href="{{ route('rollcall.studentAttendanceReport') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('rollcall.studentAttendanceReport') ? 'active' : '' }}">
+                                <i class="fas fa-chart-pie fa-fw me-3"></i><span>Report</span>
+                            </a>
+                            <a href="{{ route('exam.result') }}"
+                                class="list-group-item m-2 list-group-item-action py-2 rounded {{ request()->routeIs('exam.result') ? 'active' : '' }}">
                                 <i class="fas fa-file-alt fa-fw me-3"></i><span>Result</span>
                             </a>
                             <a href="#" class="list-group-item m-2 list-group-item-action py-2 rounded">
@@ -70,11 +77,13 @@
                 <!-- Container wrapper -->
                 <div class="container-fluid">
                     <!-- Toggle button -->
-                    <button data-mdb-button-init class="navbar-toggler me-2" type="button" data-mdb-collapse-init
-                        data-mdb-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <i class="fas fa-bars"></i>
-                    </button>
+                    @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'teacher'))
+                        <button data-mdb-button-init class="navbar-toggler me-2" type="button" data-mdb-collapse-init
+                            data-mdb-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    @endif
 
                     <!-- Brand -->
                     <a class="navbar-brand text-decoration-none" href="#">
@@ -100,12 +109,18 @@
                                     <span class="ms-2 d-none d-md-inline">{{ Auth::user()->name }}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                                    <li>
+                                    @if (Auth::user()->role == 'user')
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('user.dashboard') }}">My
+                                                Dashboard</a>
+                                        </li>
+                                    @endif
+                                    {{-- <li>
                                         <a class="dropdown-item" href="#">My profile</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="#">Settings</a>
-                                    </li>
+                                    </li> --}}
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
@@ -124,33 +139,50 @@
                         @endif
                     </ul>
                 </div>
-                <!-- Container wrapper -->
+
             </nav>
-            <!-- Navbar -->
+
         </header>
-        <!--Main Navigation-->
+        {{-- <!--Main Navigation-->
+        @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'teacher')) --}}
 
         <!--Main layout-->
         @hasSection('title')
-            <main class="main-content">
-                <div class="container-fluid">
-                    <!-- Breadcrumb -->
-                    @if (Auth::check())
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
-                            </ol>
-                        </nav>
-                    @endif
+            @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'teacher'))
+                <main class="main-content">
+                    <div class="container-fluid">
+                        <!-- Breadcrumb -->
+                        @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'teacher'))
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
+                                </ol>
+                            </nav>
+                        @else
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
+                                </ol>
+                            </nav>
+                        @endif
 
-                    <div class="content-wrapper">
-                        @yield('content')
+                        <div class="content-wrapper">
+                            @yield('content')
+                        </div>
                     </div>
-                </div>
-            </main>
+                </main>
+            @else
+                <main class="main-content p-0 mx-0 mb-0">
+                    <div class="container-fluid">
+                        <div class="content-wrapper">
+                            @yield('content')
+                        </div>
+                    </div>
+                </main>
+            @endif
         @else
-            <main class="main-content p-0 m-0">
+            <main class="main-content p-0 mx-0 mb-0">
                 <div class="container-fluid">
                     <div class="content-wrapper">
                         @yield('content')
@@ -213,6 +245,7 @@
     <script src="{{ asset('assets/js/delete.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="{{ asset('assets/js/toast.js') }}"></script>
+    <script type="module" src="{{ asset('assets/js/script.js') }}"></script>
 </body>
 
 </html>

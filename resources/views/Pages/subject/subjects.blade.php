@@ -7,7 +7,7 @@
                 <!-- Search and Filter Section -->
                 <div class="card shadow rounded-4 border-0 mb-4">
                     <div class="card-body p-4">
-                        <form action="{{ route('admin.subject.index') }}" method="GET" class="row g-3 align-items-end">
+                        <form action="{{ route('subject.index') }}" method="GET" class="row g-3 align-items-end">
 
                             <div class="col-md-2">
                                 <label for="subject_name" class="form-label fw-semibold small text-muted">Subject</label>
@@ -25,7 +25,7 @@
                                 <button type="submit" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm flex-grow-1">
                                     <i class="fas fa-search me-2"></i>Search
                                 </button>
-                                <a href="{{ route('admin.subject.index') }}"
+                                <a href="{{ route('subject.index') }}"
                                     class="btn btn-outline-secondary px-3 py-2 rounded-3 shadow-sm">
                                     <i class="fas fa-redo"></i>
                                 </a>
@@ -58,7 +58,7 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="subjectForm" action="{{ route('admin.subject.store') }}" method="POST"
+                                <form id="subjectForm" action="{{ route('subject.store') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="mb-3">
@@ -95,7 +95,7 @@
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-primary text-white">
                                 <tr>
-                                    
+
                                     <th scope="col" class="text-2xl fw-semibold py-4 px-4 border-0">
                                         Subject Name
                                     </th>
@@ -133,7 +133,7 @@
                                                             {{ $module->module_code }}
                                                         </span>
                                                     @endforeach
-                                                    <a href="{{ route('admin.subject.show', $subject->id) }}"
+                                                    <a href="{{ route('subject.show', $subject->id) }}"
                                                         class="btn btn-sm btn-outline-info px-2 py-1 rounded-pill">
                                                         <i
                                                             class="fas fa-plus me-1"></i>{{ $subject->modules->count() - 4 }}
@@ -149,12 +149,12 @@
                                         </td>
                                         <td class="py-3 px-4 border-0">
                                             <div class="d-flex justify-content-center gap-2">
-                                                <a href="{{ route('admin.subject.edit', $subject->id) }}"
+                                                <a href="{{ route('subject.edit', $subject->id) }}"
                                                     class="btn btn-sm btn-outline-primary px-3 hover-lift"
                                                     data-bs-toggle="tooltip" title="Edit subject">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a href="{{ route('admin.subject.show', $subject->id) }}"
+                                                <a href="{{ route('subject.show', $subject->id) }}"
                                                     class="btn btn-sm btn-outline-info px-3 hover-lift"
                                                     data-bs-toggle="tooltip" title="View Details">
                                                     <i class="fas fa-eye"></i>
@@ -167,7 +167,7 @@
                                                 </button>
                                             </div>
                                             <form id="deleteForm{{ $subject->id }}"
-                                                action="{{ route('admin.subject.destroy', $subject->id) }}"
+                                                action="{{ route('subject.destroy', $subject->id) }}"
                                                 method="POST" class="d-none">
                                                 @csrf
                                                 @method('DELETE')
@@ -254,7 +254,7 @@
                                                         {{ $module->module_code }}
                                                     </span>
                                                 @endforeach
-                                                <a href="{{ route('admin.subject.show', $subject->id) }}"
+                                                <a href="{{ route('subject.show', $subject->id) }}"
                                                     class="badge bg-secondary text-white px-2 py-1 rounded-2 text-decoration-none fw-normal shadow-sm">
                                                     +{{ $subject->modules->count() - 4 }} more
                                                 </a>
@@ -268,7 +268,7 @@
                                         </div>
                                         <small class="text-muted">No modules available</small>
                                         <div class="mt-2">
-                                            <a href="{{ route('admin.subject.show', $subject->id) }}"
+                                            <a href="{{ route('subject.show', $subject->id) }}"
                                                 class="btn btn-outline-success btn-sm rounded-2">
                                                 <i class="fas fa-plus me-1"></i>Add Modules
                                             </a>
@@ -277,12 +277,12 @@
                                 @endif
 
                                 <div class="d-flex justify-content-end gap-2 mt-3">
-                                    <a href="{{ route('admin.subject.edit', $subject->id) }}"
+                                    <a href="{{ route('subject.edit', $subject->id) }}"
                                         class="btn btn-sm btn-outline-primary px-3 hover-lift" data-bs-toggle="tooltip"
                                         title="Edit subject">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="{{ route('admin.subject.show', $subject->id) }}"
+                                    <a href="{{ route('subject.show', $subject->id) }}"
                                         class="btn btn-sm btn-outline-info px-3 hover-lift" data-bs-toggle="tooltip"
                                         title="View Details">
                                         <i class="fas fa-eye"></i>
@@ -295,7 +295,7 @@
                                 </div>
 
                                 <form id="deleteForm{{ $subject->id }}"
-                                    action="{{ route('admin.subject.destroy', $subject->id) }}" method="POST"
+                                    action="{{ route('subject.destroy', $subject->id) }}" method="POST"
                                     class="d-none">
                                     @csrf
                                     @method('DELETE')

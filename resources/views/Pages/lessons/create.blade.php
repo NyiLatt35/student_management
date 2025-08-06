@@ -17,7 +17,7 @@
                     <div class="col-lg-8">
                         <div class="card shadow rounded-4 border-0">
                             <div class="card-body p-4">
-                                <form action="{{ route('admin.lesson.store') }}" method="POST"
+                                <form action="{{ route('lesson.store') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
 
@@ -66,7 +66,7 @@
 
                                     <!-- Action Buttons -->
                                     <div class="d-flex gap-3 justify-content-end">
-                                        {{-- <a href="{{ route('admin.lesson.index') }}"
+                                        {{-- <a href="{{ route('lesson.index') }}"
                                            class="btn btn-outline-secondary px-4 py-2 rounded-3">
                                             <i class="fas fa-times me-2"></i>Cancel
                                         </a> --}}

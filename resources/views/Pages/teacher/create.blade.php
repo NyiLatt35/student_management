@@ -23,7 +23,7 @@
 
                         <!-- Form Content -->
                         <div class="py-2 px-3">
-                            <form action="{{ route('admin.teacher.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('teacher.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="role" value="teacher">
                                 <!-- Personal Information Section -->
@@ -43,6 +43,9 @@
                                             </label>
                                             <input type="text" name="teacher_name" class="form-control"
                                                 value="{{ old('teacher_name') }}" required>
+                                            @error('teacher_name')
+                                                <div class="invalid-feedback text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
                                         <div class="col-md-6">
@@ -51,6 +54,9 @@
                                             </label>
                                             <input type="email" name="teacher_email" class="form-control"
                                                 value="{{ old('teacher_email') }}" required>
+                                            @error('teacher_email')
+                                                <div class="invalid-feedback text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
                                         <div class="col-md-6">
@@ -59,6 +65,9 @@
                                             </label>
                                             <input type="tel" name="teacher_phone" class="form-control"
                                                 value="{{ old('teacher_phone') }}">
+                                            @error('teacher_phone')
+                                                <div class="invalid-feedback text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
                                         <div class="col-md-6">
@@ -67,6 +76,9 @@
                                             </label>
                                             <input type="text" name="teacher_address" class="form-control"
                                                 value="{{ old('teacher_address') }}">
+                                            @error('teacher_address')
+                                                <div class="invalid-feedback text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -94,6 +106,9 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            @error('teacher_subject')
+                                                <div class="invalid-feedback text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
                                         <div class="col-md-6">
@@ -109,6 +124,9 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            @error('grade')
+                                                <div class="invalid-feedback text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -138,6 +156,9 @@
                                                 <small class="text-muted">Password must be at least 8 characters
                                                     long</small>
                                             </div>
+                                            @error('teacher_password')
+                                                <div class="invalid-feedback text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
                                         <div class="col-md-6">
@@ -145,13 +166,16 @@
                                                 Confirm Password <span class="text-danger">*</span>
                                             </label>
                                             <input type="password" name="teacher_password_confirmation" class="form-control" placeholder="Re_enter password" required>
+                                            @error('teacher_password_confirmation')
+                                                <div class="invalid-feedback text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
 
                                     <!-- Action Buttons -->
                                     <div class="border-top py-3">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <a href="{{ route('admin.teacher.index') }}" class="btn btn-light px-4">
+                                            <a href="{{ route('teacher.index') }}" class="btn btn-light px-4">
                                                 <i class="fas fa-arrow-left me-2"></i>Back to List
                                             </a>
                                             <div class="d-flex gap-3">
@@ -169,6 +193,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 

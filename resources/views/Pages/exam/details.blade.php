@@ -17,10 +17,10 @@
                     </small>
                 </div>
                 <div>
-                    <a href="{{ route('admin.exam.edit', $exam->id) }}" class="btn btn-sm btn-primary me-2">
+                    <a href="{{ route('exam.edit', $exam->id) }}" class="btn btn-sm btn-primary me-2">
                         <i class="fas fa-edit me-1"></i>Edit
                     </a>
-                    <a href="{{ route('admin.exam.index') }}" class="btn btn-sm btn-outline-secondary">
+                    <a href="{{ route('exam.index') }}" class="btn btn-sm btn-outline-secondary">
                         <i class="fas fa-arrow-left me-1"></i>Back
                     </a>
                 </div>

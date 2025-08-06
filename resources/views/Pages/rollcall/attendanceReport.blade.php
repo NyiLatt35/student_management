@@ -45,7 +45,7 @@
                         <button type="submit" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm flex-grow-1">
                             <i class="fas fa-search me-2"></i>Search
                         </button>
-                        <a href="{{ route('admin.rollcall.studentAttendanceReport') }}"
+                        <a href="{{ route('rollcall.studentAttendanceReport') }}"
                             class="btn btn-outline-secondary px-3 py-2 rounded-3 shadow-sm">
                             <i class="fas fa-redo"></i>
                         </a>
@@ -77,7 +77,73 @@
                         </thead>
                         <tbody>
                             @forelse ($getRecord as $record)
-                                <tr>
+                                @if (Auth::user()->role == 'teacher')
+                                    @if ($record->gradeId == $teacherGradeId)
+                                        <tr>
+                                            <td class="fw-semibold text-primary">{{ $record->studentId }}</td>
+                                            <td class="fw-semibold">{{ $record->studentName }}</td>
+                                            <td class="text-center">
+                                                <span class="badge bg-info text-white px-3 py-2">
+                                                    Grade-{{ $record->gradeId }}
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($record->attendanceTypeId == 1)
+                                                    <span
+                                                        class="badge bg-success-subtle text-success px-3 py-2">Present</span>
+                                                @elseif ($record->attendanceTypeId == 2)
+                                                    <span class="badge bg-warning-subtle text-warning px-3 py-2">Absent with
+                                                        leave</span>
+                                                @elseif ($record->attendanceTypeId == 3)
+                                                    <span class="badge bg-danger-subtle text-danger px-3 py-2">Absent
+                                                        without leave</span>
+                                                @else
+                                                    <span class="badge bg-info-subtle text-info px-3 py-2">Weather</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                <span
+                                                    class="text-muted small">{{ Date('d-m-Y', strtotime($record->attendanceDate)) }}</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span
+                                                    class="badge bg-success text-white px-3 py-2">{{ $record->createdBy ? 'Admin' : 'Teacher' }}</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @else
+                                    <tr>
+                                        <td class="fw-semibold text-primary">{{ $record->studentId }}</td>
+                                        <td class="fw-semibold">{{ $record->studentName }}</td>
+                                        <td class="text-center">
+                                            <span class="badge bg-info text-white px-3 py-2">
+                                                Grade-{{ $record->gradeId }}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($record->attendanceTypeId == 1)
+                                                <span class="badge bg-success-subtle text-success px-3 py-2">Present</span>
+                                            @elseif ($record->attendanceTypeId == 2)
+                                                <span class="badge bg-warning-subtle text-warning px-3 py-2">Absent with
+                                                    leave</span>
+                                            @elseif ($record->attendanceTypeId == 3)
+                                                <span class="badge bg-danger-subtle text-danger px-3 py-2">Absent without
+                                                    leave</span>
+                                            @else
+                                                <span class="badge bg-info-subtle text-info px-3 py-2">Weather</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            <span
+                                                class="text-muted small">{{ Date('d-m-Y', strtotime($record->attendanceDate)) }}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span
+                                                class="badge bg-success text-white px-3 py-2">{{ $record->createdBy ? 'Admin' : 'Teacher' }}</span>
+                                        </td>
+                                    </tr>
+                                @endif
+                                {{-- <tr>
                                     <td class="fw-semibold text-primary">{{ $record->studentId }}</td>
                                     <td class="fw-semibold">{{ $record->studentName }}</td>
                                     <td class="text-center">
@@ -104,7 +170,7 @@
                                         <span
                                             class="badge bg-success text-white px-3 py-2">{{ $record->createdBy ? 'Admin' : 'Teacher' }}</span>
                                     </td>
-                                </tr>
+                                </tr> --}}
                             @empty
                                 <tr>
                                     <td colspan="6" class="text-center py-4 text-muted">

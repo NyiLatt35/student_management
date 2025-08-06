@@ -25,6 +25,19 @@ class Teacher extends Model
     {
         return $this->belongsTo(Subject::class, 'teacher_subject');
     }
+    public function student()
+    {
+        return $this->hasMany(Student::class, 'grade', 'grade');
+    }
+    public function results()
+    {
+        return $this->hasMany(Result::class, 'teacher_id', 'teacher_id');
+    }
+
+    public function exams()
+    {
+        return $this->hasMany(Exam::class, 'teacher_id', 'teacher_id');
+    }
 
     public function gradeLevel()
     {

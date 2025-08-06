@@ -7,7 +7,7 @@
             <h3 class="mb-0">Edit Exam</h3>
         </div>
         <div class="card-body p-4">
-            <form action="{{ route('admin.exam.update', $exam->id) }}" method="POST">
+            <form action="{{ route('exam.update', $exam->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end mt-4">
-                    <a href="{{ route('admin.exam.index') }}" class="btn btn-secondary px-4 me-2">Cancel</a>
+                    <a href="{{ route('exam.index') }}" class="btn btn-secondary px-4 me-2">Cancel</a>
                     <button type="submit" class="btn btn-primary px-4">Update Exam</button>
                 </div>
             </form>

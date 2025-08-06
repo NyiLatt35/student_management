@@ -15,7 +15,7 @@
                             Actions
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ route('admin.teacher.edit', $teacher->id) }}">
+                            <li><a class="dropdown-item" href="{{ route('teacher.edit', $teacher->id) }}">
                                 <i class="fas fa-pencil-square me-2"></i>Edit Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item text-danger" href="#" onclick="confirmDelete('{{ $teacher->id }}')">
@@ -160,7 +160,7 @@
                             <h6 class="mb-0 fw-semibold">Quick Actions</h6>
                             <div class="btn-group" role="group">
 
-                                <a href="{{ route('admin.teacher.index') }}" class="btn btn-outline-secondary">
+                                <a href="{{ route('teacher.index') }}" class="btn btn-outline-secondary">
                                     <i class="fas fa-arrow-left me-1"></i>Back to List
                                 </a>
 
@@ -172,7 +172,7 @@
         </div>
 
         <!-- Delete Form -->
-        <form id="deleteForm{{ $teacher->id }}" action="{{ route('admin.teacher.destroy', $teacher->id) }}" method="POST" class="d-none">
+        <form id="deleteForm{{ $teacher->id }}" action="{{ route('teacher.destroy', $teacher->id) }}" method="POST" class="d-none">
             @csrf
             @method('DELETE')
         </form>

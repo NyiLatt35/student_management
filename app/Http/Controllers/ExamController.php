@@ -64,7 +64,7 @@ class ExamController extends Controller
             // Create the exam
             Exam::create($examData);
 
-            return redirect()->route('admin.exam.index')
+            return redirect()->route('exam.index')
                            ->with('success', 'Exam created successfully!');
 
     }
@@ -129,7 +129,7 @@ class ExamController extends Controller
         // Update the exam
         $exam->update($examData);
 
-        return redirect()->route('admin.exam.index')
+        return redirect()->route('exam.index')
             ->with('success', 'Exam updated successfully!');
     }
 
@@ -144,7 +144,7 @@ class ExamController extends Controller
             $exam = Exam::findOrFail($id);
             $exam->delete();
 
-            return redirect()->route('admin.exam.index')
+            return redirect()->route('exam.index')
                         ->with('success', 'Exam deleted successfully!');
         } catch (\Exception $e) {
             return redirect()->back()

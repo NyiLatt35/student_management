@@ -17,24 +17,12 @@ class Result extends Model
         'subject_id',
         'status',
     ];
+    public function student() { return $this->belongsTo(Student::class, 'student_id'); }
+    public function exam() { return $this->belongsTo(Exam::class, 'exam_id'); }
+    // public function grade() { return $this->belongsTo('App\Models\Grade', 'grade_id'); }
+   public function teacher() { return $this->belongsTo(Teacher::class, 'id'); }
+   public function subject() { return $this->belongsTo(Subject::class, 'subject_id'); }
 
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
-    }
+   
 
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class);
-    }
-
-    public function exam()
-    {
-        return $this->belongsTo(Exam::class);
-    }
-
-    public function grade()
-    {
-        return $this->belongsTo(Grade::class);
-    }
 }

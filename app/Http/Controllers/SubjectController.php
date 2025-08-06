@@ -156,7 +156,7 @@ class SubjectController extends Controller
 
         }
         // Redirect with success message
-        return redirect()->route('admin.subject.index')->with('success', 'Subject updated successfully!');
+        return redirect()->route('subject.index')->with('success', 'Subject updated successfully!');
     }
 
     /**
@@ -178,7 +178,7 @@ class SubjectController extends Controller
 
         // Check if subject exists
         if (!$subject) {
-            return redirect()->route('admin.subject.index')->with('error', 'Subject not found!');
+            return redirect()->route('subject.index')->with('error', 'Subject not found!');
         }
 
         $data['subject'] = $subject;

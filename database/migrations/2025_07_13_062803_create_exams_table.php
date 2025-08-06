@@ -20,6 +20,8 @@ class CreateExamsTable extends Migration
             $table->unsignedBigInteger('grade_id');
             $table->enum('status', ['scheduled', 'completed', 'cancelled'])->default('scheduled');
             $table->timestamps();
+
+            $table->foreign('grade_id')->references('gradeId')->on('grades')->onDelete('cascade');
         });
     }
 
